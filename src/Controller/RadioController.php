@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Radio;
@@ -17,6 +16,7 @@ class RadioController extends AbstractController
     public function addRadio(Request $request)
     {
         $radio = new Radio();
+        $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createFormBuilder($radio)
             ->add('name', TextType::class)
@@ -24,19 +24,31 @@ class RadioController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
             $radio = $form->getData();
 
             $entityManager->persist($radio);
             $entityManager->flush();
+
             $this->addFlash("success", "New Radio has been added successfully");
             return $this->redirectToRoute('add-radio');
         }
         return $this->render('radio/addRadio.php.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/radio/list", name="list")
+     */
+    public function radioList()
+    {
+        $radio = $this->getDoctrine()
+            ->getRepository(Radio::class)
+            ->findAll();
+
+        return $this->render('radio/list.php.twig', [
+            'radio' => $radio,
         ]);
     }
 }
