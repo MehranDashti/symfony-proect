@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,6 +18,8 @@ class Radio
     private $id;
 
     /**
+     * @Assert\NotNull
+     * @Assert\Regex("/^\w+/")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $name;
