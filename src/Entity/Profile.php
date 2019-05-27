@@ -20,7 +20,7 @@ class Profile
      * @ORM\OneToOne(targetEntity="App\Entity\user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,14 +42,14 @@ class Profile
         return $this->id;
     }
 
-    public function getUserId(): ?user
+    public function getUser(): ?user
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(user $user_id): self
+    public function setUserId(user $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
